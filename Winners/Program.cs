@@ -84,68 +84,76 @@ namespace Winners
                         if (DateTime.TryParseExact(data[2].Trim(), "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startTime)
                             && DateTime.TryParseExact(data[3].Trim(), "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out endTime))
                         {
-                            string raceType = data[4].Trim();
-
-                            // (5) Finally, check if race type is valid 
-                            if (raceTypeSet.Contains(raceType))
+                            if( startTime <= endTime) 
                             {
-                                // Create temporary Participant object 
-                                Participant participant;
+                                string raceType = data[4].Trim();
 
-                                // Check if an existing participant with the same ID but different name exists
-                                // FirstOrDefault will return the first element that matches id but not name.
-                                // If no element of this kind is found, return null.
-                                Participant existingParticipantWithDifferentName = participants.FirstOrDefault(p => p.Id == id && !string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
-
-
-                                // Check if an existing participant with the same ID and different name was found.
-                                // If found, print an error message. 
-                                if (existingParticipantWithDifferentName != null)
+                                // (5) Finally, check if race type is valid 
+                                if (raceTypeSet.Contains(raceType))
                                 {
-                                    // Example: Participant with ID 3878304 already exists with a different name: Julia Roberts vs Julia
-                                    Console.WriteLine($"Error: Participant with ID {id} already exists with a different name: {existingParticipantWithDifferentName.Name} vs {name}");
-                                    // Skip creating a new participant
-                                    continue;
-                                }
+                                    // Create temporary Participant object 
+                                    Participant participant;
 
-                                // Try to get the participant from the participants list
-                                // that matches the specified name (case--insensitive!) and id.
-                                // For example: 'Julia Roberts' and 'Julia ROBERTS' should be treated as identical.
-                                // For example: 'Julia Roberts' and 'Julia' (I assume) will not be treated as identical.
-                                Participant existingParticipant = participants.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase) && p.Id == id);
+                                    // Check if an existing participant with the same ID but different name exists
+                                    // FirstOrDefault will return the first element that matches id but not name.
+                                    // If no element of this kind is found, return null.
+                                    Participant existingParticipantWithDifferentName = participants.FirstOrDefault(p => p.Id == id && !string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
 
-                                // Check if an existing participant was found
-                                if (existingParticipant != null)
-                                {
-                                    // If found, existingParticipant is assigned to the local variable participant. 
-                                    // 'participant' holds a reference to the existing participant.
-                                    // A change in the participant variable will affect the existing participant
-                                    // since both variables point to the same object in memory.
-                                    participant = existingParticipant;
+
+                                    // Check if an existing participant with the same ID and different name was found.
+                                    // If found, print an error message. 
+                                    if (existingParticipantWithDifferentName != null)
+                                    {
+                                        // Example: Participant with ID 3878304 already exists with a different name: Julia Roberts vs Julia
+                                        Console.WriteLine($"Error: Participant with ID {id} already exists with a different name: {existingParticipantWithDifferentName.Name} vs {name}");
+                                        // Skip creating a new participant
+                                        continue;
+                                    }
+
+                                    // Try to get the participant from the participants list
+                                    // that matches the specified name (case--insensitive!) and id.
+                                    // For example: 'Julia Roberts' and 'Julia ROBERTS' should be treated as identical.
+                                    // For example: 'Julia Roberts' and 'Julia' (I assume) will not be treated as identical.
+                                    Participant existingParticipant = participants.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase) && p.Id == id);
+
+                                    // Check if an existing participant was found
+                                    if (existingParticipant != null)
+                                    {
+                                        // If found, existingParticipant is assigned to the local variable participant. 
+                                        // 'participant' holds a reference to the existing participant.
+                                        // A change in the participant variable will affect the existing participant
+                                        // since both variables point to the same object in memory.
+                                        participant = existingParticipant;
+                                    }
+                                    else
+                                    {
+                                        // If not found, create a new participant with the specified name and id
+                                        participant = new Participant(name, id);
+                                    }
+                                    // Add race result to participant 
+                                    participant.Results.Add(new RaceResult(raceType, startTime, endTime));
+                                    // If there is no existing participant, add participant to list of participants
+                                    if (!participants.Contains(participant))
+                                    {
+                                        participants.Add(participant);
+                                    }
+
                                 }
                                 else
                                 {
-                                    // If not found, create a new participant with the specified name and id
-                                    participant = new Participant(name, id);
+                                    if (string.IsNullOrWhiteSpace(raceType))
+                                    {
+                                        raceType = "No race type added";
+                                    }
+                                    Console.WriteLine($"Invalid race type for {name}: {raceType} ");
                                 }
-                                // Add race result to participant 
-                                participant.Results.Add(new RaceResult(raceType, startTime, endTime));
-                                // If there is no existing participant, add participant to list of participants
-                                if (!participants.Contains(participant))
-                                {
-                                    participants.Add(participant);
-                                }
-
                             }
-                            else
+                            else 
                             {
-                                if (string.IsNullOrWhiteSpace(raceType))
-                                {
-                                    raceType = "No race type added";
-                                }
-                                Console.WriteLine($"Invalid race type for {name}: {raceType} ");
+                                Console.WriteLine($"Invalid time format for {name}: startTime {data[2]} occurs later than endTime {data[3]}");
                             }
                         }
+                            
                         else
                         {
                             Console.WriteLine($"Invalid time format for {name}: {data[2]} or {data[3]}");

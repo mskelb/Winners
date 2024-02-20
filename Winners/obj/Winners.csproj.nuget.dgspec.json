@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "Z:\\Desktop\\Programmering i C# II\\Winners\\Winners.csproj": {}
+    "Z:\\Desktop\\github\\Winners\\Winners\\Winners.csproj": {}
   },
   "projects": {
-    "Z:\\Desktop\\Programmering i C# II\\Winners\\Winners.csproj": {
+    "Z:\\Desktop\\github\\Winners\\Winners\\Winners.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "Z:\\Desktop\\Programmering i C# II\\Winners\\Winners.csproj",
+        "projectUniqueName": "Z:\\Desktop\\github\\Winners\\Winners\\Winners.csproj",
         "projectName": "Winners",
-        "projectPath": "Z:\\Desktop\\Programmering i C# II\\Winners\\Winners.csproj",
+        "projectPath": "Z:\\Desktop\\github\\Winners\\Winners\\Winners.csproj",
         "packagesPath": "C:\\Users\\stefan\\.nuget\\packages\\",
-        "outputPath": "Z:\\Desktop\\Programmering i C# II\\Winners\\obj\\",
+        "outputPath": "Z:\\Desktop\\github\\Winners\\Winners\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
