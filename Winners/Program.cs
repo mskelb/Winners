@@ -84,6 +84,7 @@ namespace Winners
                         if (DateTime.TryParseExact(data[2].Trim(), "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out startTime)
                             && DateTime.TryParseExact(data[3].Trim(), "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out endTime))
                         {
+                            // Check also so that starTime does not occur later than endTime 
                             if( startTime <= endTime) 
                             {
                                 string raceType = data[4].Trim();
